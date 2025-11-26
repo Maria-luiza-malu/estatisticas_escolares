@@ -20,3 +20,15 @@ def ler_arquivo(caminho_arquivo):
     
     return df
 
+def validar_dados(df):
+    """
+    Valida se o DataFrame contém colunas essenciais: 'Aluno' e 'Disciplina'
+    """
+    colunas_necessarias = ["Aluno", "Disciplina", "Nota"]
+    for coluna in colunas_necessarias:
+        if coluna not in df.columns:
+            raise ValueError(f"Coluna obrigatória ausente: {coluna}")
+    
+    # Substituir valores ausentes por 0
+    df.fillna(0, inplace=True)
+    return df
