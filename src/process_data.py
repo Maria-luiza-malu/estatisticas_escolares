@@ -2,23 +2,22 @@
 import pandas as pd
 import os
 
-def ler_arquivo(caminho_arquivo):
-    """
-    Lê arquivo CSV ou Excel e retorna um DataFrame do pandas.
-    """
-    if not os.path.exists(caminho_arquivo):
-        raise FileNotFoundError(f"Arquivo não encontrado: {caminho_arquivo}")
-    
-    extensao = os.path.splitext(caminho_arquivo)[1].lower()
-    
-    if extensao == ".csv":
-        df = pd.read_csv(caminho_arquivo)
-    elif extensao in [".xls", ".xlsx"]:
-        df = pd.read_excel(caminho_arquivo)
+import pandas as pd
+import os
+
+def ler_arquivo(caminho):
+    if not os.path.exists(caminho):
+        raise FileNotFoundError(f"Arquivo não encontrado: {caminho}")
+
+    if caminho.endswith(".csv"):
+        df = pd.read_csv(caminho)
+    elif caminho.endswith(".xlsx"):
+        df = pd.read_excel(caminho, engine='openpyxl')  # <- aqui
     else:
-        raise ValueError("Formato de arquivo não suportado. Use CSV ou Excel.")
+        raise ValueError("Formato de arquivo não suportado. Use CSV ou XLSX")
     
     return df
+
 
 def validar_dados(df):
     """
