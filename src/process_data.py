@@ -2,9 +2,6 @@
 import pandas as pd
 import os
 
-import pandas as pd
-import os
-
 def ler_arquivo(caminho):
     if not os.path.exists(caminho):
         raise FileNotFoundError(f"Arquivo não encontrado: {caminho}")
