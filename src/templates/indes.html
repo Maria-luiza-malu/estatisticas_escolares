@@ -3,14 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Estatísticas Escolares</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h1>Enviar arquivo de Notas</h1>
 
-    <form action="/upload" method="POST" enctype="multipart/form-data">
-        <label>Escolha um arquivo XLSX:</label><br>
-        <input type="file" name="arquivo"><br><br>
-        <button type="submit">Enviar</button>
-    </form>
+    <div class="container">
+        <h1>Estatísticas Escolares</h1>
+        <p>Envie um arquivo Excel contendo as notas dos alunos:</p>
+
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <input type="file" name="arquivo" accept=".xlsx,.xls" required>
+            <button type="submit">Enviar Arquivo</button>
+        </form>
+
+        {% if resultado %}
+            <div class="resultado">
+                <h2>Resultado:</h2>
+                <pre>{{ resultado }}</pre>
+            </div>
+        {% endif %}
+    </div>
+
 </body>
 </html>
