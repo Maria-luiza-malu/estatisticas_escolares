@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultado das Notas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='resultado.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Resultados da Análise</h1>
+
+        <div class="box">
+            <h2>Estatísticas Gerais</h2>
+            <p><strong>Média da turma:</strong> {{ estatisticas.media }}</p>
+            <p><strong>Maior nota:</strong> {{ estatisticas.maior }}</p>
+            <p><strong>Menor nota:</strong> {{ estatisticas.menor }}</p>
+        </div>
+
+        <div class="box">
+            <h2>Tabela de Notas</h2>
+            {{ tabela|safe }}
+        </div>
+
+        <a href="/" class="btn-voltar">Voltar ao início</a>
+    </div>
+
+</body>
+</html>

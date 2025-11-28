@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Estatísticas Escolares</title>
+    <!--link rel="stylesheet" href="/src/static/style.css"-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Estatísticas Escolares</h1>
+        <p>Envie um arquivo Excel contendo as notas dos alunos:</p>
+
+       <form action="/" method="POST" enctype="multipart/form-data">
+            <input type="file" name="arquivo">
+            <button type="submit">Enviar</button>
+        </form>
+
+        {% if resultado %}
+            <div class="resultado">
+                <h2>Resultado:</h2>
+                <pre>{{ resultado }}</pre>
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>
