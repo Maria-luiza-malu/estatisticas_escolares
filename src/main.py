@@ -1,35 +1,31 @@
 from flask import Flask, render_template, request
-from process_data import ler_arquivo, validar_dados
 import os
+from process_data import ler_arquivo, validar_dados
 
 app = Flask(__name__)
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def index():
-    return render_template("index.html")
+    resultado = None
 
-@app.route("/upload", methods=["POST"])
-def upload():
-    if "arquivo" not in request.files:
-        return render_template("index.html", resultado="Erro: Nenhum arquivo enviado.")
+    if request.method == "POST":
+        arquivo = request.files.get("arquivo")
 
-    arquivo = request.files["arquivo"]
+        if not arquivo:
+            resultado = "Nenhum arquivo enviado."
+        else:
+            # Verifica extensão
+            if not arquivo.filename.endswith(".csv"):
+                resultado = "Envie um arquivo CSV válido!"
+            else:
+                caminho_salvo = os.path.join("data", "notas.csv")
+                arquivo.save(caminho_salvo)
 
-    if arquivo.filename == "":
-        return render_template("index.html", resultado="Erro: Nome de arquivo inválido.")
+                df = ler_arquivo(caminho_salvo)
+                resultado = validar_dados(df)
 
-    # Caminho temporário
-    caminho_temp = "data/temp.xlsx"
-    arquivo.save(caminho_temp)
+    return render_template("index.html", resultado=resultado)
 
-    try:
-        df = ler_arquivo(caminho_temp)
-        validar = validar_dados(df)
-        os.remove(caminho_temp)
-
-        return render_template("index.html", resultado=f"Arquivo válido!\n\n{df.head()}")
-    except Exception as e:
-        return render_template("index.html", resultado=f"Erro ao processar: {e}")
 
 if __name__ == "__main__":
     app.run(debug=True)
