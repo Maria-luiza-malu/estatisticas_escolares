@@ -2,29 +2,21 @@
 import pandas as pd
 import os
 
-def ler_arquivo(caminho):
-    if not os.path.exists(caminho):
-        raise FileNotFoundError(f"Arquivo não encontrado: {caminho}")
-
-    if caminho.endswith(".csv"):
-        df = pd.read_csv(caminho)
-    elif caminho.endswith(".xlsx"):
-        df = pd.read_excel(caminho, engine='openpyxl')  # <- aqui
-    else:
-        raise ValueError("Formato de arquivo não suportado. Use CSV ou XLSX")
-    
-    return df
+def ler_arquivo(caminho_arquivo):
+    try:
+        df = pd.read_csv(caminho_arquivo, sep=",")
+        return df
+    except Exception as e:
+        return f"Erro ao ler CSV: {str(e)}"
 
 
 def validar_dados(df):
-    """
-    Valida se o DataFrame contém colunas essenciais: 'Aluno' e 'Disciplina'
-    """
-    colunas_necessarias = ["Aluno", "Disciplina", "Nota"]
-    for coluna in colunas_necessarias:
-        if coluna not in df.columns:
-            raise ValueError(f"Coluna obrigatória ausente: {coluna}")
-    
-    # Substituir valores ausentes por 0
-    df.fillna(0, inplace=True)
-    return df
+    if isinstance(df, str):
+        return df  # já veio como erro
+
+    colunas_esperadas = ["aluno", "matematica", "portugues", "ciencias"]
+    for col in colunas_esperadas:
+        if col not in df.columns:
+            return f"Erro: coluna obrigatória ausente: {col}"
+
+    return "Dados validados com sucesso!"
